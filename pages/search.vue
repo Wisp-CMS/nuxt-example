@@ -1,35 +1,57 @@
 <template>
   <div>
+    <div class="mb-4">
+      <NuxtLink :to="`/`">Back</NuxtLink>
+    </div>
     <h1>Search Results</h1>
-    <ul v-if="posts.length">
-      <li v-for="post in posts" :key="post.id">
-        <NuxtLink :to="`/blog/${post.slug}`">{{ post.title }}</NuxtLink>
-      </li>
-    </ul>
+    <div class="grid grid-cols-2 gap-4 mb-10" v-if="posts.length">
+      <div
+        v-for="post in posts"
+        :key="post.id"
+        class="bg-white rounded-lg shadow overflow-hidden"
+      >
+        <NuxtLink :to="`/blog/${post.slug}`">
+          <img
+            :src="post.image"
+            :alt="post.title"
+            class="w-full h-48 object-cover"
+          />
+        </NuxtLink>
+        <div class="prose prose-a:no-underline pt-4 p-2">
+          <h2>
+            <NuxtLink :to="`/blog/${post.slug}`">{{ post.title }}</NuxtLink>
+          </h2>
+          <p class="line-clamp-3">{{ post.description }}</p>
+        </div>
+      </div>
+    </div>
     <p v-else>No results found.</p>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
-import { wisp } from '~/plugins/wispClient'
+import { ref, onMounted, watch } from "vue";
+import { useRoute } from "vue-router";
+import { wisp } from "~/plugins/wispClient";
 
-const route = useRoute()
-const posts = ref([])
+const route = useRoute();
+const posts = ref([]);
 
 const searchPosts = async (query) => {
-  const response = await wisp.getPosts({ query })
-  posts.value = response.posts
-}
+  const response = await wisp.getPosts({ query });
+  posts.value = response.posts;
+};
 
 onMounted(() => {
-  searchPosts(route.query.q)
-})
+  searchPosts(route.query.q);
+});
 
-watch(() => route.query.q, (newQuery) => {
-  searchPosts(newQuery)
-})
+watch(
+  () => route.query.q,
+  (newQuery) => {
+    searchPosts(newQuery);
+  }
+);
 </script>
 
 <style scoped>

@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div >
     <input 
+      class="border p-2 rounded-md my-2 w-full focus-visible:outline-gray-600 focus-visible:placeholder:text-gray-600 bg-transparent"
       v-model="query" 
       @keyup.enter="onSearch" 
       placeholder="Search..." 
@@ -21,14 +22,3 @@ const onSearch = () => {
   }x
 }
 </script>
-
-<style scoped>
-div {
-  margin: 1em 0;
-}
-input {
-  width: 100%;
-  padding: 0.5em;
-  font-size: 1em;
-}
-</style>

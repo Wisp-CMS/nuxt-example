@@ -1,26 +1,42 @@
 <template>
   <div>
     <h1>Posts Tagged: {{ route.params.tag }}</h1>
-    <ul>
-      <li v-for="post in filteredPosts" :key="post.id">
-        <NuxtLink :to="`/blog/${post.slug}`">{{ post.title }}</NuxtLink>
-      </li>
-    </ul>
+    <div class="grid grid-cols-2 gap-4 mb-10">
+      <div
+        v-for="post in filteredPosts"
+        :key="post.id"
+        class="bg-white rounded-lg shadow overflow-hidden"
+      >
+        <NuxtLink :to="`/blog/${post.slug}`">
+          <img
+            :src="post.image"
+            :alt="post.title"
+            class="w-full h-48 object-cover"
+          />
+        </NuxtLink>
+        <div class="prose prose-a:no-underline pt-4 p-2">
+          <h2>
+            <NuxtLink :to="`/blog/${post.slug}`">{{ post.title }}</NuxtLink>
+          </h2>
+          <p class="line-clamp-3">{{ post.description }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
-import { wisp } from '~/plugins/wispClient'
+import { onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
+import { wisp } from "~/plugins/wispClient";
 
-const route = useRoute()
-const filteredPosts = ref([])
+const route = useRoute();
+const filteredPosts = ref([]);
 
 onMounted(async () => {
-  const response = await wisp.getPosts({ tag: route.params.tag })
-  filteredPosts.value = response.posts
-})
+  const response = await wisp.getPosts({ tag: route.params.tag });
+  filteredPosts.value = response.posts;
+});
 </script>
 
 <style scoped>
